@@ -1,14 +1,14 @@
 FROM alpine:3.17
 
-
-#ENV ARCH=aarch64
-ENV ARCH=x86_64
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
 RUN apk add curl
 
 # Prepare kubectl
 ENV KUBECTL_VERSION=1.23.15
-RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl && mv kubectl /usr/bin/kubectl && chmod +x /usr/bin/kubectl
+RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/${TARGETPLATFORM}/kubectl && mv kubectl /usr/bin/kubectl && chmod +x /usr/bin/kubectl
 
 
 # Prepare aws cli
